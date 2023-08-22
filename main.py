@@ -56,13 +56,13 @@ def update_contact(phone_book):
         updated_contact = phone_book.contacts[update_index]
         print(ENTER_OR_ESC)
         updated_contact.last_name = input(
-            LAST_NAME_INPUT) or updated_contact.last_name
+            LAST_NAME_INPUT).capitalize() or updated_contact.last_name
         updated_contact.first_name = input(
-            FIRST_NAME_INPUT) or updated_contact.first_name
+            FIRST_NAME_INPUT).capitalize() or updated_contact.first_name
         updated_contact.patronymic = input(
-            PATRONYMIC_INPUT) or updated_contact.patronymic
+            PATRONYMIC_INPUT).capitalize() or updated_contact.patronymic
         updated_contact.organization = input(
-            ORGANIZATION_INPUT) or updated_contact.organization
+            ORGANIZATION_INPUT).capitalize() or updated_contact.organization
         updated_contact.work_phone = input(
             WORK_PHONE_INPUT) or updated_contact.work_phone
         updated_contact.mobile_phone = input(

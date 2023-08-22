@@ -28,15 +28,14 @@ TEST_DATA_SIZE = 10_000
 
 Запустите скрипт:
 ```
-python create_phone_book.py
+python3 create_phone_book.py
 ```
 
 #### Работа с телефонной книгой:
 
-
 Установите и активируйте виртуальное окружение, установите зависимости:
 ```
-python -m venv venv
+python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 ```

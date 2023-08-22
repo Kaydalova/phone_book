@@ -5,11 +5,12 @@
 # "Новый частотный словарь русской лексики" О. Н. Ляшевская, С. А. Шаров.
 
 from random import randrange, sample
+from typing import List
 
 from constants import PHONE_BOOK_FILE_NAME, TEST_DATA_SIZE
 
 
-def load_common_words() -> list[str]:
+def load_common_words() -> List[str]:
     """
     Функция читает файл и возвращает список самых частых русских слов.
     """
