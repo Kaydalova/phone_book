@@ -33,13 +33,13 @@ def create_contact(phone_book):
     organization = '*'
     work_phone = mobile_phone = '1'
     while not validate_name_cyrillic(last_name):
-        last_name = input(LAST_NAME_INPUT)
+        last_name = input(LAST_NAME_INPUT).capitalize()
     while not validate_name_cyrillic(first_name):
-        first_name = input(FIRST_NAME_INPUT)
+        first_name = input(FIRST_NAME_INPUT).capitalize()
     while not validate_name_cyrillic(patronymic):
-        patronymic = input(PATRONYMIC_INPUT)
+        patronymic = input(PATRONYMIC_INPUT).capitalize()
     while not validate_organization(organization):
-        organization = input(ORGANIZATION_INPUT)
+        organization = input(ORGANIZATION_INPUT).capitalize()
     while not validate_phone(work_phone):
         work_phone = input(WORK_PHONE_INPUT)
     while not validate_phone(mobile_phone):
@@ -47,7 +47,7 @@ def create_contact(phone_book):
     new_contact = phone_book.create_contact(
         last_name, first_name, patronymic,
         organization, work_phone, mobile_phone)
-    print(CONTACT_CREATED.format(new_contact))
+    return CONTACT_CREATED.format(new_contact)
 
 
 def update_contact(phone_book):
@@ -95,16 +95,19 @@ def main():
         if choice == "1":
             show_contacts(phone_book)
         elif choice == "2":
-            create_contact(phone_book)
+            status = create_contact(phone_book)
+            print(status)
         elif choice == "3":
             update_contact(phone_book)
         elif choice == '4':
             search_results = find_contact(phone_book)
             if search_results:
+                print()
                 print(SEARCH_RESULTS)
                 for contact in search_results:
                     print(contact)
             else:
+                print()
                 print(NOT_FOUND)
         elif choice == "5":
             break

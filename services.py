@@ -28,7 +28,7 @@ class Contact:
 
     def __repr__(self) -> str:
         return f"""{self.index}.
-ФИО:{self.last_name} {self.first_name} {self.patronymic}
+ФИО: {self.last_name} {self.first_name} {self.patronymic}
 Организация: {self.organization}
 Рабочий телефон: {self.work_phone}
 Мобильный телефон: {self.mobile_phone}"""
@@ -93,7 +93,7 @@ class PhoneBook:
             file.write(f"""{index};{last_name};{first_name};\
 {patronymic};{organization};{work_phone};{mobile_phone}\n""")
         new_contact = Contact(
-            index, last_name, first_name,
+            str(index), last_name, first_name,
             patronymic, organization, work_phone, mobile_phone)
         self.contacts.append(new_contact)
         self.last_index += 1
@@ -128,9 +128,9 @@ class PhoneBook:
         results = []
         for contact in self.contacts:
             search_res = all(
-                            [getattr(contact, key) == value.capitalize()
-                                for key, value in search_params.items()
-                                if value])
+                [getattr(contact, key) == value.capitalize()
+                    for key, value in search_params.items()
+                    if value])
             if search_res:
                 results.append(contact)
         return results
