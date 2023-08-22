@@ -1,5 +1,5 @@
 <div align="center">
- <img src="phone_book/phonebook.png" alt="Logo">
+ <img src="phonebook.jpg" alt="Logo">
 <h3 >Телефонный справочник</h3>
 Приложение дает возможность хранить весь ваш список контактов в одном месте.
 </div>
