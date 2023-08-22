@@ -1,14 +1,16 @@
+from typing import List
+
 import readchar
-from constants import (
-    PHONE_BOOK_FILE_NAME, ORGANIZATION_INPUT, WORK_PHONE_INPUT, 
-    PER_PAGE, LAST_NAME_INPUT, FIRST_NAME_INPUT, MOBILE_INPUT, CHOICE_INPUT, 
-    ESC_KEY_CODE, ENTER_KEY_CODE, PATRONYMIC_INPUT, CONTACT_CREATED, 
-    MAIN_MENU, NEXT_OR_EXIT_TO_MENU)
-from services import PhoneBook
-from validators import (
-    validate_name_cyrillic,
-    validate_organization,
-    validate_phone)
+from constants import (CHOICE_INPUT, CHOOSE_1_TO_5, CONTACT_CREATED,
+                       CONTACT_UPDATED, ENTER_KEY_CODE, ENTER_OR_ESC,
+                       ESC_KEY_CODE, FIRST_NAME_INPUT, INDEX_INPUT,
+                       INVALID_INDEX, LAST_NAME_INPUT, MAIN_MENU, MOBILE_INPUT,
+                       NEXT_OR_EXIT_TO_MENU, NOT_FOUND, ORGANIZATION_INPUT,
+                       PATRONYMIC_INPUT, PER_PAGE, PHONE_BOOK_FILE_NAME,
+                       SEARCH_INDEX, SEARCH_RESULTS, WORK_PHONE_INPUT)
+from services import Contact, PhoneBook
+from validators import (validate_name_cyrillic, validate_organization,
+                        validate_phone)
 
 
 def show_contacts(phone_book):
@@ -27,7 +29,9 @@ def show_contacts(phone_book):
 
 
 def create_contact(phone_book):
-    last_name = first_name = patronymic = organization = work_phone = mobile_phone = None
+    last_name = first_name = patronymic = '1'
+    organization = '*'
+    work_phone = mobile_phone = '1'
     while not validate_name_cyrillic(last_name):
         last_name = input(LAST_NAME_INPUT)
     while not validate_name_cyrillic(first_name):
@@ -40,24 +44,46 @@ def create_contact(phone_book):
         work_phone = input(WORK_PHONE_INPUT)
     while not validate_phone(mobile_phone):
         mobile_phone = input(MOBILE_INPUT)
-    new_contact = phone_book.create_contact(last_name, first_name, patronymic, organization, work_phone, mobile_phone)
+    new_contact = phone_book.create_contact(
+        last_name, first_name, patronymic,
+        organization, work_phone, mobile_phone)
     print(CONTACT_CREATED.format(new_contact))
 
 
 def update_contact(phone_book):
-    update_index = int(input("Введите индекс записи, которую хотите изменить: ")) -1
+    update_index = int(input(SEARCH_INDEX)) - 1
     if 0 <= update_index < phone_book.last_index:
         updated_contact = phone_book.contacts[update_index]
-        print("Введите поля, которые хотите изменить. Есл нет нажмите Enter для пропуска.")
-        updated_contact.last_name = input(f"Фамилия кириллицей: ({updated_contact.last_name}): ") or updated_contact.last_name
-        updated_contact.first_name = input(f"Имя кириллицей: ({updated_contact.first_name}): ") or updated_contact.first_name
-        updated_contact.patronymic = input(f"Отчество кириллицей: ({updated_contact.patronymic}): ") or updated_contact.patronymic
-        updated_contact.organization = input(f"Название организации: ({updated_contact.organization}): ") or updated_contact.organization
-        updated_contact.work_phone = input(f"Рабочий телефон в формате +7(9XX)XXX-XX-XX: ({updated_contact.work_phone}): ") or updated_contact.work_phone
-        updated_contact.mobile_phone = input(f"Мобильный телефон в формате +7(9XX)XXX-XX-XX: ({updated_contact.mobile_phone}): ") or updated_contact.mobile_phone
+        print(ENTER_OR_ESC)
+        updated_contact.last_name = input(
+            LAST_NAME_INPUT) or updated_contact.last_name
+        updated_contact.first_name = input(
+            FIRST_NAME_INPUT) or updated_contact.first_name
+        updated_contact.patronymic = input(
+            PATRONYMIC_INPUT) or updated_contact.patronymic
+        updated_contact.organization = input(
+            ORGANIZATION_INPUT) or updated_contact.organization
+        updated_contact.work_phone = input(
+            WORK_PHONE_INPUT) or updated_contact.work_phone
+        updated_contact.mobile_phone = input(
+            MOBILE_INPUT) or updated_contact.mobile_phone
         phone_book.update_contact(update_index, updated_contact)
+        print(CONTACT_UPDATED.format(updated_contact))
     else:
-        print("Неверный индекс.")
+        print(INVALID_INDEX)
+
+
+def find_contact(phone_book) -> List[Contact]:
+    search_params = {}
+    search_params['index'] = input(INDEX_INPUT)
+    search_params['last_name'] = input(LAST_NAME_INPUT)
+    search_params['first_name'] = input(FIRST_NAME_INPUT)
+    search_params['patronymic'] = input(PATRONYMIC_INPUT)
+    search_params['organization'] = input(ORGANIZATION_INPUT)
+    search_params['work_phone'] = input(WORK_PHONE_INPUT)
+    search_params['mobile_phone'] = input(MOBILE_INPUT)
+    search_results = phone_book.get_contact(search_params)
+    return search_results
 
 
 def main():
@@ -72,30 +98,18 @@ def main():
             create_contact(phone_book)
         elif choice == "3":
             update_contact(phone_book)
-
-
-
         elif choice == '4':
-            search_params = {}
-            search_params['last_name'] = input("Фамилия: ")
-            search_params['first_name'] = input("Имя: ")
-            search_params['patronymic'] = input("Отчество: ")
-            search_params['organization'] = input("Название организации: ")
-            search_params['work_phone'] = input("Рабочий телефон: ")
-            search_params['mobile_phone'] = input("Мобильный телефон: ")
-            search_results = phone_book.get_contact(**search_params)
+            search_results = find_contact(phone_book)
             if search_results:
-                print("Результаты поиска:")
+                print(SEARCH_RESULTS)
                 for contact in search_results:
                     print(contact)
-
             else:
-                print("Ничего не найдено.")
+                print(NOT_FOUND)
         elif choice == "5":
             break
         else:
-            print("Пожалуйста, выберите пункт от 1 до 5.")
-
+            print(CHOOSE_1_TO_5)
 
 
 if __name__ == "__main__":
